@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Urban Duka | Fashion, Bags and Accessories Delivered</title>
+<meta name="description" content="Clothes, shoes, bags and accessories for men, women and kids. Order on WhatsApp, pay with M-Pesa on delivery.">
+<meta name="theme-color" content="#101312">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Urban Duka | Fashion, Bags and Accessories Delivered">
+<meta property="og:description" content="Order on WhatsApp, pay with M-Pesa on delivery.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🛍️%3C/text%3E%3C/svg%3E">
+<style>
+:root{--ink:#101312;--bg:#f2f3f0;--card:#fff;--mute:#5d6560;--line:#dcded8;--green:#0f7b45;--sun:#f5c400;--red:#c8102e;--r:14px}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:68px}
+body{font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-text-size-adjust:100%}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+section{padding:40px 0}
+h2{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:16px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:11px 14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.wa{background:var(--green);color:#fff}.wa:hover:not(:disabled){background:#0b6637}
+.ghost{background:#fff;border:2px solid var(--ink);color:var(--ink)}
+
+header{position:fixed;inset:0 0 auto;height:60px;background:var(--ink);color:#fff;z-index:20}
+header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:1.15rem;letter-spacing:-.02em;text-decoration:none}
+#cartBtn{background:var(--sun);color:var(--ink);padding:8px 14px;min-height:40px}
+#count{background:var(--ink);color:#fff;border-radius:99px;font-size:.75rem;min-width:22px;height:22px;display:grid;place-items:center;padding:0 6px}
+
+.hero{background:var(--ink);color:#fff;padding:92px 0 44px}
+.hero h1{font-size:clamp(2.4rem,9vw,4.6rem);font-weight:900;letter-spacing:-.04em;line-height:.95;max-width:12ch}
+.hero p{color:#c9cec9;max-width:44ch;margin:18px 0 24px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero .ghost{background:transparent;color:#fff;border-color:#fff}
+
+.trust{background:var(--sun);padding:0}
+.trust ul{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink)}
+.trust li{background:var(--sun);padding:14px 16px;font-weight:700;font-size:.9rem}
+.trust small{display:block;font-weight:400;font-size:.8rem}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px}
+.chip{font:inherit;font-weight:600;white-space:nowrap;border:2px solid var(--ink);background:transparent;border-radius:99px;padding:6px 16px;min-height:40px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff}
+.chips.sub .chip{border-color:var(--line);font-weight:500;min-height:36px;padding:4px 14px}
+.chips.sub .chip[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+input,textarea{font:inherit;width:100%;padding:10px;border:2px solid var(--line);border-radius:10px;background:#fff;min-height:44px}
+#q{margin-bottom:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.card{background:var(--card);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line)}
+.ph{position:relative;aspect-ratio:1;background:#e4e6e1;display:grid;place-items:center;font-size:3rem}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tag{position:absolute;top:8px;left:8px;z-index:1;background:var(--sun);font-size:.72rem;font-weight:800;padding:2px 8px;border-radius:6px}
+.tag.out{background:var(--ink);color:#fff}
+.body{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.body h3{font-size:.98rem;line-height:1.25}
+.price{font-weight:800;font-size:1.15rem}
+.opt{border-radius:8px}
+.opt.err{outline:2px solid var(--red);outline-offset:3px}
+.lbl{display:block;font-size:.8rem;color:var(--mute);margin-bottom:4px}
+.sw,.sz{display:flex;flex-wrap:wrap;gap:6px}
+.swb{width:32px;height:32px;border-radius:50%;background:var(--c);border:2px solid var(--line);cursor:pointer;padding:0;box-shadow:inset 0 0 0 2px #fff}
+.swb[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 2px #fff,0 0 0 2px var(--ink)}
+.szb{font:inherit;font-size:.85rem;font-weight:600;min-width:40px;min-height:36px;padding:0 8px;border:2px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.szb[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.swb:disabled,.szb:disabled{opacity:.3;cursor:not-allowed}
+.szb:disabled{text-decoration:line-through}
+.row{display:flex;gap:8px;margin-top:auto}
+.row .wa{flex:1;font-size:.88rem;padding:10px 8px}
+.row .ghost{width:48px;padding:0;font-size:1.4rem}
+.empty{grid-column:1/-1;color:var(--mute)}
+
+.steps{display:grid;gap:12px;list-style:none;padding:0;counter-reset:s}
+.steps li{counter-increment:s;background:var(--card);border-radius:var(--r);padding:16px 16px 16px 64px;position:relative;border:1px solid var(--line)}
+.steps li::before{content:counter(s);position:absolute;left:16px;top:14px;width:36px;height:36px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800}
+.steps b{display:block}
+.steps span{color:var(--mute);font-size:.92rem}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:8px}
+summary{font-weight:700;cursor:pointer}
+details p{margin-top:8px;color:var(--mute)}
+.info{display:grid;gap:12px}
+.info div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.info h3{margin-bottom:4px}
+.info p,.info li{color:var(--mute)}
+.info ul{padding-left:0;list-style:none}
+.till{font-size:1.5rem;font-weight:900;color:var(--ink);letter-spacing:.04em}
+
+footer{background:var(--ink);color:#aab0ab;padding:32px 0 96px;font-size:.9rem}
+footer h3{color:#fff;margin:16px 0 4px;font-size:1rem}
+footer a{color:#fff}
+.fab{position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;padding:0;z-index:20;box-shadow:0 6px 18px rgba(0,0,0,.35);border:3px solid #fff}
+.fab svg{width:30px;height:30px;fill:currentColor}
+#toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s;z-index:40;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+dialog{margin:auto 0 0;width:100%;max-width:520px;border:0;border-radius:18px 18px 0 0;padding:20px 16px;max-height:88vh;overflow:auto}
+@media(min-width:560px){dialog{margin:auto;border-radius:18px}}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+dialog h2{font-size:1.3rem}
+#lines{list-style:none;padding:0;margin-bottom:12px}
+#lines li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+#lines small{display:block;color:var(--mute)}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:36px;height:36px;border-radius:8px;border:2px solid var(--ink);background:#fff;font-size:1.1rem;cursor:pointer}
+.tot{display:flex;justify-content:space-between;font-weight:800;font-size:1.15rem;margin:12px 0}
+dialog label{display:block;font-weight:600;margin:10px 0 4px}
+dialog .btn{width:100%;margin-top:10px}
+.note{font-size:.85rem;color:var(--mute);margin-top:8px}
+
+@media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}.steps,.info{grid-template-columns:repeat(3,1fr)}.trust ul{grid-template-columns:repeat(4,1fr)}#q{max-width:320px}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" data-b="name"></a>
+    <button class="btn" id="cartBtn" aria-label="Open your order">Order <span id="count">0</span></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <h1 data-b="headline"></h1>
+      <p data-b="sub"></p>
+      <div class="cta">
+        <a class="btn wa" href="#shop">Shop now</a>
+        <a class="btn ghost" href="#how">How ordering works</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust"><div class="wrap"><ul id="trust"></ul></div></section>
+
+  <section id="shop">
+    <div class="wrap">
+      <h2>Shop</h2>
+      <input id="q" type="search" placeholder="Search products" aria-label="Search products" hidden>
+      <div class="chips" id="depts" role="group" aria-label="Department"></div>
+      <div class="chips sub" id="types" role="group" aria-label="Type" hidden></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="how" style="padding-top:0">
+    <div class="wrap">
+      <h2>Order in 3 steps</h2>
+      <ol class="steps">
+        <li><b>Choose your pair or piece</b><span>Pick your colour and size, then tap Order now. Buying several things? Tap + on each to build one order.</span></li>
+        <li><b>Confirm on WhatsApp</b><span>We reply to confirm stock, delivery time and your total.</span></li>
+        <li><b>Pay when it arrives</b><span>Check your order, then pay by M-Pesa to our Till.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Questions</h2>
+      <div id="faq"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap info">
+      <div><h3>Pay with M-Pesa</h3><p>Lipa na M-Pesa, Buy Goods</p><p class="till" id="till"></p><p id="tillName"></p></div>
+      <div><h3>Opening hours</h3><ul id="hours"></ul></div>
+      <div><h3>Find us</h3><p id="loc"></p><p><a id="map" href="#" target="_blank" rel="noopener">Open in Google Maps</a></p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>&copy; <span id="yr"></span> <span data-b="name"></span>. Prices in KES. No hidden fees.</p>
+    <h3 id="privacy">Privacy</h3>
+    <p>We only use what you send on WhatsApp (name, phone, delivery spot) to process your order. We don't sell or share it. Your order list is saved on your own phone only.</p>
+    <h3 id="terms">Terms</h3>
+    <p id="termsText"></p>
+    <h3>Contact</h3>
+    <p><a id="waLink" href="#" target="_blank" rel="noopener">Chat with us on WhatsApp</a></p>
+  </div>
+</footer>
+
+<a class="btn wa fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 .2 11.9c0 2.1.6 4.1 1.6 5.9L0 24l6.4-1.7a11.9 11.9 0 0 0 5.6 1.4A11.9 11.9 0 0 0 20.5 3.5zM12 21.7a9.8 9.8 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 1 1 8.4 4.7zm5.4-7.3c-.3-.1-1.800-.9-2-1s-.5-.1-.7.1-.8 1-1 1.200-.4.200-.7.100a8 8 0 0 1-4-3.500c-.3-.5.300-.5.900-1.600.1-.2 0-.4 0-.5l-.9-2.200c-.2-.6-.5-.5-.7-.5h-.6a1.200 1.200 0 0 0-.9.400 3.700 3.700 0 0 0-1.100 2.700 6.400 6.400 0 0 0 1.400 3.400 14.700 14.700 0 0 0 5.700 5c2.100.9 2.900 1 3.900.8a3.300 3.300 0 0 0 2.200-1.600 2.700 2.700 0 0 0 .2-1.600c-.1-.1-.3-.2-.6-.3z"/></svg>
+</a>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="cart" aria-labelledby="cartTitle">
+  <h2 id="cartTitle">Your order</h2>
+  <ul id="lines"></ul>
+  <div class="tot"><span>Total</span><span id="total"></span></div>
+  <label for="where">Delivery spot (building, street, landmark)</label>
+  <input id="where" autocomplete="street-address" placeholder="e.g. Kimathi House, Kimathi St">
+  <a class="btn wa" id="send" href="#" target="_blank" rel="noopener">Send order on WhatsApp</a>
+  <button class="btn ghost" id="close" type="button">Keep shopping</button>
+  <p class="note">Nothing is charged here. We confirm stock and total on WhatsApp first.</p>
+</dialog>
+
+<script>
+/* ============ EDIT THIS BLOCK PER CLIENT ============ */
+const C = {
+  name: "Urban Duka",
+  headline: "Look good. Delivered.",
+  sub: "Clothes, shoes, bags and accessories. Order on WhatsApp, pay with M-Pesa when it arrives.",
+  phone: "254700000000",          // international format, no + or spaces
+  till: "123456",                 // PLACEHOLDER: client's real Till
+  tillName: "Urban Duka",
+  currency: "KES",
+  searchAfter: 10,                // show the search box once there are more products than this
+  trust: [                        // keep these true for the client
+    ["Free CBD delivery", "Same day, orders before 4pm"],
+    ["Pay on delivery", "M-Pesa after you check"],
+    ["Other areas", "Fee confirmed before you pay"],
+    ["Wrong size?", "Exchange within 3 days, unworn"]
+  ],
+  hours: ["Mon to Sat: 8am to 7pm", "Sunday: 10am to 5pm"],
+  location: "Moi Avenue, Nairobi CBD (delivery and pickup)",
+  mapUrl: "https://maps.google.com/?q=Moi+Avenue+Nairobi",
+  terms: "Prices are in KES and include everything listed. Stock is confirmed on WhatsApp before you pay. Pay by M-Pesa on delivery after checking your order. Unworn items in original condition can be exchanged within 3 days.",
+  faq: [
+    ["Are the items original?", "Write what is true for this shop here: where the stock comes from and what condition it is in."],
+    ["How long does delivery take?", "Within Nairobi CBD, same day for orders before 4pm. Other areas are confirmed on WhatsApp."],
+    ["Can I pay before delivery?", "You can, but you don't have to. Most customers pay by M-Pesa after checking their order."],
+    ["What if my size or colour is sold out?", "Message us. We will tell you honestly if it can be restocked and how long it takes."]
+  ],
+  /* PRODUCTS. Only id, name, dept, type and price are required.
+     sizes: ["S","M"]  -> optional, leave out if the item has no size
+     colors: [{n:"Red", hex:"#c8102e", img:"optional photo of this colour"}] -> optional
+     out: ["45","Black"] -> sold-out sizes or colour names;  soldOut:true -> whole item sold out
+     img: photo (use compressed files in an img/ folder);  emoji: shown until a photo exists;  tag: small badge */
+  products: [
+    {id:1,name:"Nike Air Max",dept:"Men",type:"Shoes",price:4500,sizes:["40","41","42","43","44","45"],out:["45"],tag:"Best seller",
+      img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=75&w=500",
+      colors:[{n:"Red",hex:"#c8102e"},{n:"Black",hex:"#1a1a1a"}]},
+    {id:2,name:"Air Jordan 1 Retro",dept:"Men",type:"Shoes",price:5200,sizes:["39","40","41","42","43","44"],
+      img:"https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?auto=format&fit=crop&q=75&w=500",
+      colors:[{n:"Red/White",hex:"#c8102e"},{n:"All White",hex:"#f4f4f4"}]},
+    {id:3,name:"Puma RS-X",dept:"Men",type:"Shoes",price:3800,sizes:["41","42","43","44","45"],tag:"Few left",
+      img:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&q=75&w=500"},
+    {id:4,name:"Cotton Polo Shirt",dept:"Men",type:"Tops",price:1200,emoji:"👕",sizes:["S","M","L","XL","XXL"],
+      colors:[{n:"Navy",hex:"#1f2d5a"},{n:"White",hex:"#ffffff"},{n:"Green",hex:"#2e7d4f"}]},
+    {id:5,name:"Floral Wrap Dress",dept:"Women",type:"Dresses",price:2800,emoji:"👗",sizes:["S","M","L","XL"],out:["XL"],
+      colors:[{n:"Blue Floral",hex:"#3f6fb5"},{n:"Black",hex:"#1a1a1a"}]},
+    {id:6,name:"Leather Tote Bag",dept:"Women",type:"Bags",price:3200,emoji:"👜",
+      colors:[{n:"Tan",hex:"#b07a45"},{n:"Black",hex:"#1a1a1a"}]},
+    {id:7,name:"Kids School Shoes",dept:"Kids",type:"Shoes",price:2200,emoji:"👟",sizes:["28","29","30","31","32","33","34","35"]},
+    {id:8,name:"Kids Hoodie",dept:"Kids",type:"Clothes",price:1500,emoji:"🧥",sizes:["4-5y","6-7y","8-9y","10-11y"],
+      colors:[{n:"Grey",hex:"#8d939a"},{n:"Red",hex:"#c8102e"}]},
+    {id:9,name:"Baby Romper Set",dept:"Babies",type:"Clothes",price:900,emoji:"🍼",sizes:["0-3m","3-6m","6-12m"],
+      colors:[{n:"Yellow",hex:"#f2c94c"},{n:"White",hex:"#ffffff"}]},
+    {id:10,name:"Hard-shell Suitcase 24in",dept:"Bags & Travel",type:"Suitcases",price:8500,emoji:"🧳",
+      colors:[{n:"Silver",hex:"#b8bec4"},{n:"Navy",hex:"#1f2d5a"}]},
+    {id:11,name:"Leather Belt",dept:"Accessories",type:"Belts",price:800,emoji:"🪢",sizes:["S","M","L"],
+      colors:[{n:"Black",hex:"#1a1a1a"},{n:"Brown",hex:"#6b4423"}]},
+    {id:12,name:"Classic Sunglasses",dept:"Accessories",type:"Eyewear",price:700,emoji:"🕶️",soldOut:true,tag:"Sold out"}
+  ]
+};
+/* ============ END CLIENT BLOCK ============ */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => `${C.currency} ${n.toLocaleString("en-KE")}`;
+const wa = t => `https://wa.me/${C.phone}?text=${encodeURIComponent(t)}`;
+const P = id => C.products.find(p => p.id === id);
+const isOut = (p, v) => (p.out || []).map(String).includes(String(v));
+const variant = o => [o.color, o.size && `size ${o.size}`].filter(Boolean).join(", ");
+
+let cart = [];
+try { cart = JSON.parse(localStorage.getItem("cart") || "[]").filter(l => P(l.id)); } catch (e) {}
+const save = () => { try { localStorage.setItem("cart", JSON.stringify(cart)); } catch (e) {} };
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("on");
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 2200);
+}
+
+/* static content */
+document.querySelectorAll("[data-b]").forEach(el => { el.textContent = C[el.dataset.b]; });
+$("#trust").innerHTML = C.trust.map(([a, b]) => `<li>${esc(a)}<small>${esc(b)}</small></li>`).join("");
+$("#faq").innerHTML = C.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("");
+$("#hours").innerHTML = C.hours.map(h => `<li>${esc(h)}</li>`).join("");
+$("#till").textContent = C.till; $("#tillName").textContent = C.tillName;
+$("#loc").textContent = C.location; $("#map").href = C.mapUrl;
+$("#termsText").textContent = C.terms; $("#yr").textContent = new Date().getFullYear();
+$("#waLink").href = $("#fab").href = wa(`Habari ${C.name}, I have a question.`);
+
+/* product cards */
+function card(p) {
+  const out = p.soldOut;
+  const col = p.colors ? `<div class="opt" data-opt="color"><span class="lbl">Colour: <b data-l>choose one</b></span><div class="sw">${p.colors.map(c =>
+    `<button type="button" class="swb" data-color="${esc(c.n)}" style="--c:${esc(c.hex)}" aria-label="${esc(c.n)}" aria-pressed="false"${out || isOut(p, c.n) ? " disabled" : ""}></button>`).join("")}</div></div>` : "";
+  const siz = p.sizes ? `<div class="opt" data-opt="size"><span class="lbl">Size</span><div class="sz">${p.sizes.map(s =>
+    `<button type="button" class="szb" data-size="${esc(s)}" aria-pressed="false"${out || isOut(p, s) ? " disabled" : ""}>${esc(s)}</button>`).join("")}</div></div>` : "";
+  return `<article class="card" data-id="${p.id}" data-color="" data-size="">
+    <div class="ph">${esc(p.emoji || "🛍️")}${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" width="500" height="500" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">` : ""}${p.tag ? `<span class="tag${out ? " out" : ""}">${esc(p.tag)}</span>` : ""}</div>
+    <div class="body"><h3>${esc(p.name)}</h3><p class="price">${money(p.price)}</p>${col}${siz}
+      <div class="row"><button class="btn wa" data-act="order"${out ? " disabled" : ""}>${out ? "Sold out" : "Order now"}</button>
+      <button class="btn ghost" data-act="add" aria-label="Add ${esc(p.name)} to your order"${out ? " disabled" : ""}>+</button></div></div></article>`;
+}
+
+/* filters: department, then type, plus optional search */
+const S = {dept: "All", type: "All", q: ""};
+const chips = (list, cur) => list.map(c => `<button class="chip" aria-pressed="${c === cur}">${esc(c)}</button>`).join("");
+function show() {
+  const depts = [...new Set(C.products.map(p => p.dept))];
+  const types = S.dept === "All" ? [] : [...new Set(C.products.filter(p => p.dept === S.dept).map(p => p.type))];
+  $("#depts").innerHTML = chips(["All", ...depts], S.dept);
+  $("#types").hidden = types.length < 2;
+  $("#types").innerHTML = chips(["All types", ...types], S.type === "All" ? "All types" : S.type);
+  const q = S.q.toLowerCase();
+  const list = C.products.filter(p => (S.dept === "All" || p.dept === S.dept) && (S.type === "All" || p.type === S.type) && p.name.toLowerCase().includes(q));
+  $("#grid").innerHTML = list.map(card).join("") || `<p class="empty">Nothing here yet. Message us and we will check.</p>`;
+}
+$("#depts").addEventListener("click", e => { if (e.target.classList.contains("chip")) { S.dept = e.target.textContent; S.type = "All"; show(); } });
+$("#types").addEventListener("click", e => { if (e.target.classList.contains("chip")) { S.type = e.target.textContent === "All types" ? "All" : e.target.textContent; show(); } });
+$("#q").hidden = C.products.length <= C.searchAfter;
+$("#q").addEventListener("input", e => { S.q = e.target.value.trim(); show(); });
+show();
+
+/* choosing options and ordering */
+$("#grid").addEventListener("click", e => {
+  const el = e.target.closest(".card"); if (!el) return;
+  const p = P(+el.dataset.id), v = e.target.closest("[data-color],[data-size]");
+  if (v && v !== el && !v.disabled) {
+    const k = v.hasAttribute("data-color") ? "color" : "size";
+    el.dataset[k] = v.dataset[k];
+    el.querySelectorAll(`[data-${k}]`).forEach(b => b !== el && b.setAttribute("aria-pressed", b === v));
+    el.querySelector(`[data-opt=${k}]`).classList.remove("err");
+    if (k === "color") {
+      el.querySelector("[data-l]").textContent = v.dataset.color;
+      const im = el.querySelector("img"), c = p.colors.find(c => c.n === v.dataset.color);
+      if (im) im.src = c.img || p.img;
+    }
+    return;
+  }
+  const b = e.target.closest("[data-act]"); if (!b || b.disabled) return;
+  const need = ["color", "size"].find(k => p[k + "s"] && !el.dataset[k]);
+  if (need) { const o = el.querySelector(`[data-opt=${need}]`); o.classList.add("err"); o.scrollIntoView({block: "center"}); return toast(`Choose a ${need} first`); }
+  const sel = {color: el.dataset.color, size: el.dataset.size}, vt = variant(sel);
+  if (b.dataset.act === "order") {
+    window.open(wa(`Habari ${C.name}, I'd like to order:\n${p.name}${vt ? ", " + vt : ""}, ${money(p.price)}\n\nIs it available?`), "_blank", "noopener");
+  } else {
+    const l = cart.find(x => x.id === p.id && x.color === sel.color && x.size === sel.size);
+    l ? l.qty++ : cart.push({id: p.id, ...sel, qty: 1});
+    save(); drawCart(); toast(`${p.name}${vt ? " (" + vt + ")" : ""} added`);
+  }
+});
+
+/* order list */
+const total = () => cart.reduce((s, l) => s + P(l.id).price * l.qty, 0);
+function drawCart() {
+  $("#count").textContent = cart.reduce((s, l) => s + l.qty, 0);
+  $("#lines").innerHTML = cart.map((l, i) => { const p = P(l.id), vt = variant(l);
+    return `<li><div><strong>${esc(p.name)}</strong><small>${vt ? esc(vt) + " &middot; " : ""}${money(p.price)}</small></div>
+    <div class="qty"><button data-i="${i}" data-d="-1" aria-label="Remove one">&minus;</button><span>${l.qty}</span><button data-i="${i}" data-d="1" aria-label="Add one">+</button></div></li>`;
+  }).join("") || `<li>Your order is empty. Choose your options and tap + on any item.</li>`;
+  $("#total").textContent = money(total());
+  $("#send").hidden = !cart.length;
+}
+$("#lines").addEventListener("click", e => {
+  const b = e.target.closest("button[data-i]"); if (!b) return;
+  const i = +b.dataset.i; cart[i].qty += +b.dataset.d;
+  if (cart[i].qty < 1) cart.splice(i, 1);
+  save(); drawCart();
+});
+$("#send").addEventListener("click", function () {
+  const lines = cart.map((l, i) => { const vt = variant(l);
+    return `${i + 1}. ${P(l.id).name}${vt ? ", " + vt : ""} x${l.qty} = ${money(P(l.id).price * l.qty)}`; }).join("\n");
+  const where = $("#where").value.trim() || "(I will share my location)";
+  this.href = wa(`Habari ${C.name}, I'd like to order:\n${lines}\n\nTotal: ${money(total())}\nDelivery spot: ${where}\n\nPlease confirm availability.`);
+});
+$("#cartBtn").onclick = () => { drawCart(); $("#cart").showModal(); };
+$("#close").onclick = () => $("#cart").close();
+$("#cart").addEventListener("click", e => { if (e.target.id === "cart") e.target.close(); });
+drawCart();
+</script>
+</body>
+</html>
