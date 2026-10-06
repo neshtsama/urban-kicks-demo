@@ -156,7 +156,7 @@ dialog .btn{width:100%;margin-top:10px}
       <ol class="steps">
         <li><b>Choose your pair or piece</b><span>Pick your colour and size, then tap Order now. Buying several things? Tap + on each to build one order.</span></li>
         <li><b>Confirm on WhatsApp</b><span>We reply to confirm stock, delivery time and your total.</span></li>
-        <li><b>Pay when it arrives</b><span>Check your order, then pay by M-Pesa to our Till.</span></li>
+        <li><b>Pay when it arrives</b><span>Check your order, then pay by M-Pesa.</span></li>
       </ol>
     </div>
   </section>
@@ -170,7 +170,7 @@ dialog .btn{width:100%;margin-top:10px}
 
   <section style="padding-top:0">
     <div class="wrap info">
-      <div><h3>Pay with M-Pesa</h3><p>Lipa na M-Pesa, Buy Goods</p><p class="till" id="till"></p><p id="tillName"></p></div>
+      <div><h3>Pay with M-Pesa</h3><p id="payLbl"></p><p class="till" id="till"></p><p id="payAcc"></p><p id="tillName"></p></div>
       <div><h3>Opening hours</h3><ul id="hours"></ul></div>
       <div><h3>Find us</h3><p id="loc"></p><p><a id="map" href="#" target="_blank" rel="noopener">Open in Google Maps</a></p></div>
     </div>
@@ -180,6 +180,7 @@ dialog .btn{width:100%;margin-top:10px}
 <footer>
   <div class="wrap">
     <p>&copy; <span id="yr"></span> <span data-b="name"></span>. Prices in KES. No hidden fees.</p>
+    <p id="demoNote" hidden>Demo site. Shop details shown here are placeholders.</p>
     <h3 id="privacy">Privacy</h3>
     <p>We only use what you send on WhatsApp (name, phone, delivery spot) to process your order. We don't sell or share it. Your order list is saved on your own phone only.</p>
     <h3 id="terms">Terms</h3>
@@ -212,8 +213,9 @@ const C = {
   headline: "Look good. Delivered.",
   sub: "Clothes, shoes, bags and accessories. Order on WhatsApp, pay with M-Pesa when it arrives.",
   phone: "254700000000",          // international format, no + or spaces
-  till: "123456",                 // PLACEHOLDER: client's real Till
-  tillName: "Urban Duka",
+  pay: {type:"till", number:"123456", name:"Urban Duka"},  // PLACEHOLDER. For Paybill use {type:"paybill", number:"714888", account:"164152", name:"Business name"}
+  demo: true,                     // true = demo site (hidden from Google, shows a demo note). Set false for real clients
+  sheet: "",                      // optional: Google Sheet "published as CSV" link, so the owner edits stock himself (docs/SHEET-SETUP.md)
   currency: "KES",
   searchAfter: 10,                // show the search box once there are more products than this
   trust: [                        // keep these true for the client
@@ -236,7 +238,8 @@ const C = {
      sizes: ["S","M"]  -> optional, leave out if the item has no size
      colors: [{n:"Red", hex:"#c8102e", img:"optional photo of this colour"}] -> optional
      out: ["45","Black"] -> sold-out sizes or colour names;  soldOut:true -> whole item sold out
-     img: photo (use compressed files in an img/ folder);  emoji: shown until a photo exists;  tag: small badge */
+     img: photo (use compressed files in an img/ folder);  emoji: shown until a photo exists;  tag: small badge
+     custom: "Name to engrave" -> shows a required text box; what the customer types goes into the order */
   products: [
     {id:1,name:"Nike Air Max",dept:"Men",type:"Shoes",price:4500,sizes:["40","41","42","43","44","45"],out:["45"],tag:"Best seller",
       img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=75&w=500",
@@ -261,7 +264,8 @@ const C = {
       colors:[{n:"Silver",hex:"#b8bec4"},{n:"Navy",hex:"#1f2d5a"}]},
     {id:11,name:"Leather Belt",dept:"Accessories",type:"Belts",price:800,emoji:"🪢",sizes:["S","M","L"],
       colors:[{n:"Black",hex:"#1a1a1a"},{n:"Brown",hex:"#6b4423"}]},
-    {id:12,name:"Classic Sunglasses",dept:"Accessories",type:"Eyewear",price:700,emoji:"🕶️",soldOut:true,tag:"Sold out"}
+    {id:12,name:"Classic Sunglasses",dept:"Accessories",type:"Eyewear",price:700,emoji:"🕶️",soldOut:true,tag:"Sold out"},
+    {id:13,name:"Engraved Wooden Notebook",dept:"Gifts",type:"Notebooks",price:1200,emoji:"📓",custom:"Name to engrave"}
   ]
 };
 /* ============ END CLIENT BLOCK ============ */
@@ -272,10 +276,11 @@ const money = n => `${C.currency} ${n.toLocaleString("en-KE")}`;
 const wa = t => `https://wa.me/${C.phone}?text=${encodeURIComponent(t)}`;
 const P = id => C.products.find(p => p.id === id);
 const isOut = (p, v) => (p.out || []).map(String).includes(String(v));
-const variant = o => [o.color, o.size && `size ${o.size}`].filter(Boolean).join(", ");
+const variant = o => [o.color, o.size && `size ${o.size}`, o.note].filter(Boolean).join(", ");
 
+const ok = l => P(l.id) && P(l.id).name === l.n;
 let cart = [];
-try { cart = JSON.parse(localStorage.getItem("cart") || "[]").filter(l => P(l.id)); } catch (e) {}
+try { cart = JSON.parse(localStorage.getItem("cart") || "[]").filter(ok); } catch (e) {}
 const save = () => { try { localStorage.setItem("cart", JSON.stringify(cart)); } catch (e) {} };
 function toast(msg) {
   const t = $("#toast"); t.textContent = msg; t.classList.add("on");
@@ -287,7 +292,10 @@ document.querySelectorAll("[data-b]").forEach(el => { el.textContent = C[el.data
 $("#trust").innerHTML = C.trust.map(([a, b]) => `<li>${esc(a)}<small>${esc(b)}</small></li>`).join("");
 $("#faq").innerHTML = C.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("");
 $("#hours").innerHTML = C.hours.map(h => `<li>${esc(h)}</li>`).join("");
-$("#till").textContent = C.till; $("#tillName").textContent = C.tillName;
+const pay = C.pay, pb = pay.type === "paybill";
+$("#payLbl").textContent = pb ? "Lipa na M-Pesa, Paybill. Business no.:" : "Lipa na M-Pesa, Buy Goods. Till no.:";
+$("#till").textContent = pay.number; $("#payAcc").textContent = pb ? "Account no.: " + pay.account : ""; $("#tillName").textContent = pay.name;
+if (C.demo) { const m = document.createElement("meta"); m.name = "robots"; m.content = "noindex"; document.head.append(m); $("#demoNote").hidden = false; }
 $("#loc").textContent = C.location; $("#map").href = C.mapUrl;
 $("#termsText").textContent = C.terms; $("#yr").textContent = new Date().getFullYear();
 $("#waLink").href = $("#fab").href = wa(`Habari ${C.name}, I have a question.`);
@@ -299,9 +307,10 @@ function card(p) {
     `<button type="button" class="swb" data-color="${esc(c.n)}" style="--c:${esc(c.hex)}" aria-label="${esc(c.n)}" aria-pressed="false"${out || isOut(p, c.n) ? " disabled" : ""}></button>`).join("")}</div></div>` : "";
   const siz = p.sizes ? `<div class="opt" data-opt="size"><span class="lbl">Size</span><div class="sz">${p.sizes.map(s =>
     `<button type="button" class="szb" data-size="${esc(s)}" aria-pressed="false"${out || isOut(p, s) ? " disabled" : ""}>${esc(s)}</button>`).join("")}</div></div>` : "";
+  const cus = p.custom ? `<div class="opt" data-opt="note"><label class="lbl" for="n${p.id}">${esc(p.custom)}</label><input id="n${p.id}" data-note maxlength="40" autocomplete="off"${out ? " disabled" : ""}></div>` : "";
   return `<article class="card" data-id="${p.id}" data-color="" data-size="">
     <div class="ph">${esc(p.emoji || "🛍️")}${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.name)}" width="500" height="500" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">` : ""}${p.tag ? `<span class="tag${out ? " out" : ""}">${esc(p.tag)}</span>` : ""}</div>
-    <div class="body"><h3>${esc(p.name)}</h3><p class="price">${money(p.price)}</p>${col}${siz}
+    <div class="body"><h3>${esc(p.name)}</h3><p class="price">${money(p.price)}</p>${col}${siz}${cus}
       <div class="row"><button class="btn wa" data-act="order"${out ? " disabled" : ""}>${out ? "Sold out" : "Order now"}</button>
       <button class="btn ghost" data-act="add" aria-label="Add ${esc(p.name)} to your order"${out ? " disabled" : ""}>+</button></div></div></article>`;
 }
@@ -342,14 +351,15 @@ $("#grid").addEventListener("click", e => {
     return;
   }
   const b = e.target.closest("[data-act]"); if (!b || b.disabled) return;
-  const need = ["color", "size"].find(k => p[k + "s"] && !el.dataset[k]);
-  if (need) { const o = el.querySelector(`[data-opt=${need}]`); o.classList.add("err"); o.scrollIntoView({block: "center"}); return toast(`Choose a ${need} first`); }
-  const sel = {color: el.dataset.color, size: el.dataset.size}, vt = variant(sel);
+  const inp = el.querySelector("[data-note]"), note = inp ? inp.value.trim() : "";
+  const need = ["color", "size"].find(k => p[k + "s"] && !el.dataset[k]) || (p.custom && !note ? "note" : "");
+  if (need) { const o = el.querySelector(`[data-opt=${need}]`); o.classList.add("err"); o.scrollIntoView({block: "center"}); return toast(need === "note" ? `Enter: ${p.custom}` : `Choose a ${need} first`); }
+  const sel = {color: el.dataset.color, size: el.dataset.size, note: note && `${p.custom}: ${note}`}, vt = variant(sel);
   if (b.dataset.act === "order") {
     window.open(wa(`Habari ${C.name}, I'd like to order:\n${p.name}${vt ? ", " + vt : ""}, ${money(p.price)}\n\nIs it available?`), "_blank", "noopener");
   } else {
-    const l = cart.find(x => x.id === p.id && x.color === sel.color && x.size === sel.size);
-    l ? l.qty++ : cart.push({id: p.id, ...sel, qty: 1});
+    const l = cart.find(x => x.id === p.id && x.color === sel.color && x.size === sel.size && (x.note || "") === (sel.note || ""));
+    l ? l.qty++ : cart.push({id: p.id, n: p.name, ...sel, qty: 1});
     save(); drawCart(); toast(`${p.name}${vt ? " (" + vt + ")" : ""} added`);
   }
 });
@@ -380,7 +390,42 @@ $("#send").addEventListener("click", function () {
 $("#cartBtn").onclick = () => { drawCart(); $("#cart").showModal(); };
 $("#close").onclick = () => $("#cart").close();
 $("#cart").addEventListener("click", e => { if (e.target.id === "cart") e.target.close(); });
+$("#grid").addEventListener("input", e => { const o = e.target.closest(".opt"); if (o) o.classList.remove("err"); });
+
+/* optional: stock from a Google Sheet (falls back to the list above if anything fails) */
+function csv(t) {
+  const rows = []; let r = [], f = "", q = false;
+  for (let i = 0; i < t.length; i++) { const c = t[i];
+    if (q) { if (c == '"') { if (t[i + 1] == '"') { f += '"'; i++; } else q = false; } else f += c; }
+    else if (c == '"') q = true;
+    else if (c == ",") { r.push(f); f = ""; }
+    else if (c == "\n" || c == "\r") { if (c == "\r" && t[i + 1] == "\n") i++; r.push(f); rows.push(r); r = []; f = ""; }
+    else f += c; }
+  if (f || r.length) { r.push(f); rows.push(r); }
+  return rows;
+}
+async function loadSheet() {
+  if (!C.sheet) return;
+  try {
+    const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 8000);
+    const res = await fetch(C.sheet, {signal: ctl.signal}); clearTimeout(to);
+    if (!res.ok) throw 0;
+    const [h, ...rows] = csv(await res.text()), k = h.map(x => x.trim().toLowerCase());
+    if (!k.includes("name") || !k.includes("price")) throw 0;
+    const L = s => (s || "").split("|").map(x => x.trim()).filter(Boolean);
+    const list = rows.map((r, i) => { const o = {}; k.forEach((key, j) => o[key] = (r[j] || "").trim());
+      const sizes = L(o.sizes), colors = L(o.colors).map(c => { const [n, hex, ...u] = c.split("="); return {n: n.trim(), hex: (hex || "#cccccc").trim(), img: u.join("=") || undefined}; });
+      return {id: +o.id || i + 1, name: o.name, dept: o.dept || "Shop", type: o.type || "Items", price: +(o.price || "").replace(/[^\d.]/g, ""),
+        sizes: sizes.length ? sizes : undefined, colors: colors.length ? colors : undefined, out: L(o.out), img: o.img || undefined,
+        emoji: o.emoji || undefined, tag: o.tag || undefined, soldOut: /^(y|yes|true|1)$/i.test(o.soldout), custom: o.custom || undefined};
+    }).filter(p => p.name && p.price > 0);
+    if (!list.length) throw 0;
+    C.products = list; cart = cart.filter(ok); save(); S.dept = "All"; S.type = "All";
+    $("#q").hidden = list.length <= C.searchAfter; show(); drawCart();
+  } catch (e) { console.warn("Sheet not loaded, using the built-in products"); }
+}
 drawCart();
+loadSheet();
 </script>
 </body>
 </html>
